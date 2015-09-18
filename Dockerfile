@@ -40,6 +40,7 @@ RUN echo "deb http://apt.postgresql.org/pub/repos/apt/ trusty-pgdg main" > /etc/
             # SM: This library is necessary to upgrade PIL/pillow module
             libjpeg8-dev \
             # SM: Git is required to clone Odoo OCB project
+            git
 
 ADD sources/pip-req.txt /opt/sources/pip-req.txt
 
