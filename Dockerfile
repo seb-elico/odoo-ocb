@@ -15,32 +15,32 @@ RUN apt-key adv --keyserver keyserver.ubuntu.com --recv-keys B97B0AFCAA1A47F044F
 # some of them extend the basic odoo requirements for a better "apps" compatibility
 # most dependencies are distributed as wheel packages at the next step
 RUN echo "deb http://apt.postgresql.org/pub/repos/apt/ trusty-pgdg main" > /etc/apt/sources.list.d/pgdg.list && \
-        apt-get update && \
-        apt-get -yq install \
-            adduser \
-            ghostscript \
-            postgresql-client-9.4 \
-            python \
-            python-pip \
-            python-imaging \
-            python-pychart python-libxslt1 xfonts-base xfonts-75dpi \
-            libxrender1 libxext6 fontconfig \
-            python-zsi \
-            python-lasso \
-            # SM: libpq-dev is needed to install pg_config which is required by psycopg2
-            libpq-dev \
-            # SM: These libraries are needed to install the pip modules
-            python-dev \
-            libffi-dev \
-            libxml2-dev \
-            libxslt1-dev \
-            libldap2-dev \
-            libsasl2-dev \
-            libssl-dev \
-            # SM: This library is necessary to upgrade PIL/pillow module
-            libjpeg8-dev \
-            # SM: Git is required to clone Odoo OCB project
-            git
+  apt-get update && \
+  apt-get -yq --no-install-recommends install \
+    adduser \
+    ghostscript \
+    postgresql-client-9.4 \
+    python \
+    python-pip \
+    python-imaging \
+    python-pychart python-libxslt1 xfonts-base xfonts-75dpi \
+    libxrender1 libxext6 fontconfig \
+    python-zsi \
+    python-lasso \
+    # SM: libpq-dev is needed to install pg_config which is required by psycopg2
+    libpq-dev \
+    # SM: These libraries are needed to install the pip modules
+    python-dev \
+    libffi-dev \
+    libxml2-dev \
+    libxslt1-dev \
+    libldap2-dev \
+    libsasl2-dev \
+    libssl-dev \
+    # SM: This library is necessary to upgrade PIL/pillow module
+    libjpeg8-dev \
+    # SM: Git is required to clone Odoo OCB project
+    git
 
 ADD sources/pip-req.txt /opt/sources/pip-req.txt
 
@@ -67,9 +67,10 @@ USER odoo
 RUN /bin/bash -c "mkdir -p /opt/odoo/{bin,etc,sources/odoo,additional_addons,data}"
 RUN /bin/bash -c "mkdir -p /opt/odoo/var/{run,log,egg-cache}"
 
-# SM: Add Odoo OCB sources
+# SM: Add Odoo OCB sources (remove .git folder to reduce image size)
 WORKDIR /opt/odoo/sources
-RUN git clone https://github.com/OCA/OCB.git -b 7.0 odoo
+RUN git clone https://github.com/OCA/OCB.git -b 7.0 odoo && \
+       rm -rf odoo/.git
 
 # Execution environment
 USER 0
