@@ -16,7 +16,7 @@ RUN apt-key adv --keyserver keyserver.ubuntu.com --recv-keys B97B0AFCAA1A47F044F
 # most dependencies are distributed as wheel packages at the next step
 RUN echo "deb http://apt.postgresql.org/pub/repos/apt/ trusty-pgdg main" > /etc/apt/sources.list.d/pgdg.list && \
   apt-get update && \
-  apt-get -yq --no-install-recommends install \
+  apt-get -yq install \
     adduser \
     ghostscript \
     postgresql-client-9.4 \
